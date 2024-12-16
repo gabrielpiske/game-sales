@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Venda de Jogos</title>
+    <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form th:action="@{/login}" method="post">
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" required>
+            </div>
+            <div>
+                <button type="submit">Entrar</button>
+            </div>
+            <p th:if="${erro}" th:text="${erro}" class="error-message"></p>
+        </form>
+
+        <div>
+            <p>Não tem uma conta? <a th:href="@{/cadastro}">Crie uma Agora</a></p>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,14 +1,10 @@
 package com.venda.venda.model;
 
-import java.util.List;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -24,16 +20,13 @@ public class Carrinho {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @ManyToMany
-    @JoinTable(
-        name = "carrinho_jogo",
-        joinColumns = @JoinColumn(name = "carrinho_id"),
-        inverseJoinColumns = @JoinColumn(name = "jogo_idJogo")
-    )
-    private List<Jogo> jogos;
+    @ManyToOne
+    @JoinColumn(name = "jogo_idJogo", nullable = false)
+    private Jogo jogo;
 
     private Double valorTotal;
 
+    // gets and sets
     public Integer getId() {
         return id;
     }
@@ -50,12 +43,12 @@ public class Carrinho {
         this.usuario = usuario;
     }
 
-    public List<Jogo> getJogos() {
-        return jogos;
+    public Jogo getJogo() {
+        return jogo;
     }
 
-    public void setJogos(List<Jogo> jogos) {
-        this.jogos = jogos;
+    public void setJogo(Jogo jogo) {
+        this.jogo = jogo;
     }
 
     public Double getValorTotal() {
@@ -65,6 +58,4 @@ public class Carrinho {
     public void setValorTotal(Double valorTotal) {
         this.valorTotal = valorTotal;
     }
-
-    
 }

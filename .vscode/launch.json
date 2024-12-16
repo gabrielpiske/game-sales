@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-VendaApplication<venda>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.venda.venda.VendaApplication",
+            "projectName": "venda",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
