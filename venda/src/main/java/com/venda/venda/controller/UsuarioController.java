@@ -36,13 +36,8 @@ public class UsuarioController {
             return "redirect:/home";
         }
 
-        model.addAttribute("erro", "Credenciais inválidas . Tente novamente");
+        model.addAttribute("erro", "Credenciais inválidas. Tente novamente");
         return "login";
-    }
-    
-    @GetMapping("/cadastro")
-    public String exibirCadastroPage() {
-        return "cadastro";
     }
 
     @PostMapping("/cadastro")
