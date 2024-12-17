@@ -14,7 +14,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login", "/cadastro").permitAll() // acesso liberado as paginas
-                        .anyRequest().authenticated() // todas as outras paginas precisa de autenticação
+                        .anyRequest().authenticated() // todas as outcasdaras paginas precisa de autenticação
         )
         .formLogin(form -> form
                         .loginPage("/login") // pagina de login setada
@@ -24,6 +24,7 @@ public class SecurityConfig {
         .logout(logout -> logout
                         .logoutUrl("/logout") // url de logout
                         .logoutSuccessUrl("/login") // manda pra login depois do logout
+                        .permitAll()
         )
         .csrf(csrf -> csrf.disable());
 
