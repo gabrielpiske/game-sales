@@ -1,0 +1,14 @@
+body {
+    background-color: #f8f9fa;
+}
+.form-container {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.preview-img {
+    max-height: 150px;
+    border-radius: 5px;
+    margin-top: 10px;
+}

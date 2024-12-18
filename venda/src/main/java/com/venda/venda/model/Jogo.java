@@ -1,6 +1,9 @@
 package com.venda.venda.model;
 
+import jakarta.persistence.Transient;
 import java.sql.Date;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,6 +28,18 @@ public class Jogo {
 
     @Lob
     private byte[] imagem;
+
+    @Transient
+    private MultipartFile file;
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
 
     public Integer getIdJogo() {
         return idJogo;
