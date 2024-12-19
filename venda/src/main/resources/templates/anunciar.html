@@ -8,34 +8,129 @@
     <link rel="stylesheet" href="/css/anunciar.css">
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Gestão dos Jogos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="nav-anunciar" href="#" onclick="showAnunciar()">Anunciar Jogo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="nav-listar" href="#" onclick="showListar()">Listar Jogos</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="btn btn-dark btn-sm" href="/home">Voltar para Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>    
+
     <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="form-container">
-                    <h1 class="text-center mb-4">Anunciar Novo Jogo</h1>
-                    <form th:action="@{/anunciar}" method="post" enctype="multipart/form-data">
-                        <!-- Nome do Jogo -->
-                        <div class="mb-3">
-                            <label for="nome" class="form-label">Nome do Jogo</label>
-                            <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome do jogo" required>
-                        </div>
+        <!-- Anunciar Jogo -->
+        <div id="section-anunciar" class="d-block">
+            <h1 class="text-center mb-4">Anunciar Novo Jogo</h1>
+            <form th:action="@{/anunciar}" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome do Jogo</label>
+                    <input type="text" class="form-control" id="nome" name="nome" placeholder="Digite o nome do jogo" required>
+                </div>
+                <div class="mb-3">
+                    <label for="descricao" class="form-label">Descrição</label>
+                    <textarea class="form-control" id="descricao" name="descricao" rows="3" placeholder="Descreva brevemente o jogo" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="dataLancamento" class="form-label">Data de Lançamento</label>
+                    <input type="date" class="form-control" id="dataLancamento" name="dataLancamento" required>
+                </div>
+                <div class="mb-3">
+                    <label for="classificacaoIndicativa" class="form-label">Classificação Indicativa</label>
+                    <select class="form-select" id="classificacaoIndicativa" name="classificacaoIndicativa" required>
+                        <option value="" disabled selected>Selecione</option>
+                        <option value="Livre">Livre</option>
+                        <option value="10+">10+</option>
+                        <option value="12+">12+</option>
+                        <option value="16+">16+</option>
+                        <option value="18+">18+</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="preco" class="form-label">Preço (R$)</label>
+                    <input type="number" class="form-control" id="preco" name="preco" step="0.01" min="0" placeholder="Digite o preço do jogo" required>
+                </div>
+                <div class="mb-3">
+                    <label for="file" class="form-label">Imagem do Jogo</label>
+                    <input type="file" class="form-control" id="file" name="file" accept="image/*" onchange="previewImage(event)">
+                    <img id="preview" class="preview-img mt-3" alt="Pré-visualização da Imagem">
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">Salvar Jogo</button>
+                </div>
+            </form>
+        </div>
 
-                        <!-- Descrição -->
-                        <div class="mb-3">
-                            <label for="descricao" class="form-label">Descrição</label>
-                            <textarea class="form-control" id="descricao" name="descricao" rows="3" placeholder="Descreva brevemente o jogo" required></textarea>
-                        </div>
+        <!-- Listar Jogos -->
+        <div id="section-listar" class="d-none">
+            <h1 class="text-center mb-4">Jogos Cadastrados</h1>
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nome</th>
+                        <th>Preço</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="jogo : ${jogos}">
+                        <td th:text="${jogo.nome}">Nome do Jogo</td>
+                        <td th:text="${#numbers.formatDecimal(jogo.preco, 2, 2)}">R$ 0,00</td>
+                        <td>
+                            <a href="#" class="btn btn-warning btn-sm" 
+                            th:onclick="'editarJogo(' + ${jogo.idJogo} + ')'" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#editModal">Editar</a>                            
+                            
+                            <a th:href="@{/excluir/{id}(id=${jogo.idJogo})}" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Tem certeza que deseja excluir este Jogo?');">Excluir</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-                        <!-- Data de Lançamento -->
+    <!-- Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Jogo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" th:action="@{/anunciar}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" id="editId" name="idJogo">
                         <div class="mb-3">
-                            <label for="dataLancamento" class="form-label">Data de Lançamento</label>
-                            <input type="date" class="form-control" id="dataLancamento" name="dataLancamento" required>
+                            <label for="editNome" class="form-label">Nome do Jogo</label>
+                            <input type="text" class="form-control" id="editNome" name="nome" required>
                         </div>
-
-                        <!-- Classificação Indicativa -->
                         <div class="mb-3">
-                            <label for="classificacaoIndicativa" class="form-label">Classificação Indicativa</label>
-                            <select class="form-select" id="classificacaoIndicativa" name="classificacaoIndicativa" required>
+                            <label for="editDescricao" class="form-label">Descrição</label>
+                            <textarea class="form-control" id="editDescricao" name="descricao" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDataLancamento" class="form-label">Data de Lançamento</label>
+                            <input type="date" class="form-control" id="editDataLancamento" name="dataLancamento" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClassificacaoIndicativa" class="form-label">Classificação Indicativa</label>
+                            <select class="form-select" id="editClassificacaoIndicativa" name="classificacaoIndicativa" required>
                                 <option value="" disabled selected>Selecione</option>
                                 <option value="Livre">Livre</option>
                                 <option value="10+">10+</option>
@@ -44,23 +139,16 @@
                                 <option value="18+">18+</option>
                             </select>
                         </div>
-
-                        <!-- Preço -->
                         <div class="mb-3">
-                            <label for="preco" class="form-label">Preço (R$)</label>
-                            <input type="number" class="form-control" id="preco" name="preco" step="0.01" min="0" placeholder="Digite o preço do jogo" required>
+                            <label for="editPreco" class="form-label">Preço (R$)</label>
+                            <input type="number" class="form-control" id="editPreco" name="preco" step="0.01" min="0" required>
                         </div>
-
-                        <!-- Imagem -->
                         <div class="mb-3">
-                            <label for="file" class="form-label">Imagem do Jogo</label>
-                            <input type="file" class="form-control" id="file" name="file" accept="image/*" onchange="previewImage(event)">
-                            <img id="preview" class="preview-img" alt="Pré-visualização da Imagem">
+                            <label for="editFile" class="form-label">Imagem do Jogo</label>
+                            <input type="file" class="form-control" id="editFile" name="file" accept="image/*">
                         </div>
-
-                        <!-- Botão de Salvar -->
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Salvar Jogo</button>
+                            <button type="submit" class="btn btn-success">Salvar Alterações</button>
                         </div>
                     </form>
                 </div>
@@ -68,7 +156,7 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/anunciar.js"></script>
 </body>

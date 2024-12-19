@@ -10,7 +10,7 @@ import com.venda.venda.repository.JogoRepository;
 
 @Service
 public class JogoService {
-    
+
     @Autowired
     private JogoRepository jogoRepository;
 
@@ -19,6 +19,20 @@ public class JogoService {
     }
 
     public Jogo salvar(Jogo jogo) {
+        if (jogo.getIdJogo() != null && jogoRepository.existsById(jogo.getIdJogo())) {
+            Jogo jogoExistente = jogoRepository.findById(jogo.getIdJogo()).orElse(null);
+            if (jogoExistente != null) {
+                jogoExistente.setNome(jogo.getNome());
+                jogoExistente.setDescricao(jogo.getDescricao());
+                jogoExistente.setDataLancamento(jogo.getDataLancamento());
+                jogoExistente.setClassificacaoIndicativa(jogo.getClassificacaoIndicativa());
+                jogoExistente.setPreco(jogo.getPreco());
+                if (jogo.getImagem() != null) {
+                    jogoExistente.setImagem(jogo.getImagem());
+                }
+                return jogoRepository.save(jogoExistente);
+            }
+        }
         return jogoRepository.save(jogo);
     }
 
