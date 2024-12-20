@@ -1,12 +1,17 @@
 package com.venda.venda.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
 import com.venda.venda.model.Jogo;
+import com.venda.venda.service.CarrinhoService;
 import com.venda.venda.service.JogoService;
+import com.venda.venda.service.UsuarioService;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +25,12 @@ public class JogoController {
 
     @Autowired
     private JogoService jogoService;
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private CarrinhoService carrinhoService;
 
     @PostMapping("/anunciar")
     public String salvarOuAtualizarJogo(@ModelAttribute Jogo jogo, @RequestParam("file") MultipartFile file)
@@ -59,5 +70,29 @@ public class JogoController {
     @ResponseBody
     public Jogo obterJogoParaEdicao(@PathVariable("id") Integer id) {
         return jogoService.buscarPorId(id);
+    }
+
+    @GetMapping("/jogos")
+    @ResponseBody
+    public List<Jogo> listarJogos() {
+        return jogoService.listarTodos();
+    }
+
+    @PostMapping("/carrinho/adicionar")
+    @ResponseBody
+    public String adicionarAoCarrinho(@RequestParam Integer jogoId, Authentication authentication) {
+        String email = authentication.getName();
+        Integer usuarioId = usuarioService.buscarIdPorEmail(email);
+
+        if (usuarioId == null) {
+            return "Erro: Usuário não encontrado!";
+        }
+
+        try {
+            carrinhoService.adicionarJogo(usuarioId, jogoId);
+            return "Jogo adicionado ao carrinho!";
+        } catch (Exception e) {
+            return "Erro ao adicionar jogo ao carrinho: " + e.getMessage();
+        }
     }
 }

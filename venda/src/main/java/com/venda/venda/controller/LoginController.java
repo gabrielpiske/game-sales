@@ -1,5 +1,7 @@
 package com.venda.venda.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,10 +28,11 @@ public class LoginController {
             @RequestParam String senha,
             Model model) {
         // TODO: process POST request
-        Usuario usuario = usuarioService.buscarPorEmail(email);
+        Optional<Usuario> usuarioOpt = usuarioService.buscarPorEmail(email);
 
-        if (usuario != null && usuario.getSenha().equals(senha)) {
-            model.addAttribute("usuario", usuario);
+
+        if (usuarioOpt.isPresent() && usuarioOpt.get().getSenha().equals(senha)) {
+            model.addAttribute("usuario", usuarioOpt.get());
             return "redirect:/home";
         }
 

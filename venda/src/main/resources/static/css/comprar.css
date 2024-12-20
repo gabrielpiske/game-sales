@@ -1,0 +1,13 @@
+.jogo-card {
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.jogo-card:hover {
+    transform: scale(1.05);
+}
+
+.carousel-img {
+    height: 400px;
+    object-fit: cover;
+}
