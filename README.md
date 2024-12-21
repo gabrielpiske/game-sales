@@ -1,3 +1,3 @@
 # game-sales
 
-Stack: Spring Boot, Spring Web, Spring Security, Thymeleaf, HTML e Bootstrap
+Stack: Spring Boot (Web, Data, Security), Thymeleaf, HTML, CSS, Javascript e Bootstrap
