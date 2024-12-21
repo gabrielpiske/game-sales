@@ -72,27 +72,4 @@ public class JogoController {
         return jogoService.buscarPorId(id);
     }
 
-    @GetMapping("/jogos")
-    @ResponseBody
-    public List<Jogo> listarJogos() {
-        return jogoService.listarTodos();
-    }
-
-    @PostMapping("/carrinho/adicionar")
-    @ResponseBody
-    public String adicionarAoCarrinho(@RequestParam Integer jogoId, Authentication authentication) {
-        String email = authentication.getName();
-        Integer usuarioId = usuarioService.buscarIdPorEmail(email);
-
-        if (usuarioId == null) {
-            return "Erro: Usuário não encontrado!";
-        }
-
-        try {
-            carrinhoService.adicionarJogo(usuarioId, jogoId);
-            return "Jogo adicionado ao carrinho!";
-        } catch (Exception e) {
-            return "Erro ao adicionar jogo ao carrinho: " + e.getMessage();
-        }
-    }
 }

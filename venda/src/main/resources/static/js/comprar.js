@@ -1,5 +1,19 @@
 let jogos = [];
 
+// Buscar nome do usuário logado
+fetch('/usuario/logado')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('userName').innerText = `Olá, ${data.nome}`;
+    });
+
+// Buscar quantidade de itens no carrinho
+fetch('/carrinho/quantidade')
+    .then(response => response.json())
+    .then(data => {
+        document.getElementById('cartCount').innerText = data.quantidade;
+    });
+
 // Carregar jogos do backend
 fetch('/jogos')
     .then(response => response.json())
@@ -65,8 +79,17 @@ function adicionarCarrinho(idJogo) {
     .then(response => {
         if (response.ok) {
             alert('Jogo adicionado ao carrinho!');
+            atualizarQuantidadeCarrinho();
         } else {
             alert('Erro ao adicionar o jogo. Tente novamente.');
         }
     });
+}
+
+function atualizarQuantidadeCarrinho() {
+    fetch('/carrinho/quantidade')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('cartCount').innerText = data.quantidade;
+        });
 }

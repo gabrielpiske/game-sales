@@ -51,4 +51,8 @@ public class CarrinhoService {
     public void deletarItemDoCarrinho(Integer carrinhoId) {
         carrinhoRepository.deleteById(carrinhoId);
     }
+
+    public int quantidadeItensPorUsuario(Integer usuarioId) {
+        return carrinhoRepository.findByUsuarioId(usuarioId).size();
+    }
 }
