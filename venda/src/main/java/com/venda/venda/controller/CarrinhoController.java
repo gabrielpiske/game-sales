@@ -54,12 +54,6 @@ public class CarrinhoController {
         }
     }
 
-    @GetMapping("/usuario/logado")
-    @ResponseBody
-    public Optional<Usuario> obterUsuarioLogado(Authentication authentication) {
-        String email = authentication.getName();
-        return usuarioService.buscarPorEmail(email);
-    }
 
     @GetMapping("/carrinho/quantidade")
     @ResponseBody

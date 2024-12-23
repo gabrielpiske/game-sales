@@ -18,12 +18,13 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <span class="nav-link" id="userName">Olá, Usuário</span>
+                        <span class="nav-link" th:text="'Olá, ' + ${usuarioNome}">Olá, Usuário</span>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link cart-icon" href="/carrinho">
                             <i class="bi bi-cart"></i>
-                            <span class="cart-count" id="cartCount">0</span>
+                            <!--<span class="cart-count" th:text="${quantidadeCarrinho}">0</span>-->
+                            <span class="cart-count" id="cartCount" th:text="${quantidadeCarrinho}">0</span>
                         </a>
                     </li>
                 </ul>
@@ -34,9 +35,16 @@
     <div class="container mt-5">
         <h1 class="text-center">Jogos em Destaque</h1>
 
+        <!-- Carrossel -->
         <div id="jogosCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner" id="carousel-content">
-                <!-- Populado  -->
+            <div class="carousel-inner">
+                <div th:each="jogo, iterStat : ${jogos}" th:class="'carousel-item ' + (${iterStat.index == 0} ? 'active' : '')">
+                    <img th:src="'data:image/jpeg;base64,' + ${jogo.imagem}" class="d-block w-100 carousel-img" th:alt="${jogo.nome}">
+                    <div class="carousel-caption">
+                        <h5 th:text="${jogo.nome}"></h5>
+                        <p th:text="'R$ ' + ${jogo.preco}"></p>
+                    </div>
+                </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#jogosCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -49,9 +57,18 @@
         </div>
 
         <h2 class="mt-5">Todos os Jogos</h2>
-        <div class="row" id="jogos-container">
-            <!-- Populado -->
-        </div>
+        <div class="row">
+            <div class="col-md-3 mb-4" th:each="jogo : ${jogos}">
+                <div class="card jogo-card" th:attr="onclick='mostrarModal(' + ${jogo.idJogo} + ')'" >
+                    <img th:src="'data:image/jpeg;base64,' + ${jogo.imagem}" class="card-img-top" th:alt="${jogo.nome}">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${jogo.nome}"></h5>
+                        <p th:text="'R$ ' + ${jogo.preco}"></p>
+                    </div>
+                </div>
+                              
+            </div>
+        </div>        
     </div>
 
     <!-- Modal -->
@@ -63,7 +80,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="modal-content">
-                    <!-- Populado -->
+                    <!-- Conteúdo será preenchido com os dados do jogo -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" id="adicionarCarrinho">Adicionar ao Carrinho</button>

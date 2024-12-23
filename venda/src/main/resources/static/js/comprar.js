@@ -1,75 +1,40 @@
 let jogos = [];
 
-// Buscar nome do usuário logado
-fetch('/usuario/logado')
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('userName').innerText = `Olá, ${data.nome}`;
-    });
-
-// Buscar quantidade de itens no carrinho
-fetch('/carrinho/quantidade')
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('cartCount').innerText = data.quantidade;
-    });
-
 // Carregar jogos do backend
 fetch('/jogos')
     .then(response => response.json())
     .then(data => {
         jogos = data;
-        preencherCarousel();
-        preencherGrid();
+        console.log(jogos);  // Verifique se os dados estão corretos no console
     });
 
-function preencherCarousel() {
-    const carouselContent = document.getElementById('carousel-content');
-    jogos.slice(0, 5).forEach((jogo, index) => {
-        const active = index === 0 ? 'active' : '';
-        carouselContent.innerHTML += `
-            <div class="carousel-item ${active}">
-                <img src="data:image/jpeg;base64,${jogo.imagem}" class="d-block w-100 carousel-img" alt="${jogo.nome}">
-                <div class="carousel-caption">
-                    <h5>${jogo.nome}</h5>
-                    <p>R$ ${jogo.preco.toFixed(2)}</p>
-                </div>
-            </div>
-        `;
-    });
-}
-
-function preencherGrid() {
-    const jogosContainer = document.getElementById('jogos-container');
-    jogos.forEach(jogo => {
-        jogosContainer.innerHTML += `
-            <div class="col-md-3 mb-4">
-                <div class="card jogo-card" onclick="mostrarModal(${jogo.idJogo})">
-                    <img src="data:image/jpeg;base64,${jogo.imagem}" class="card-img-top" alt="${jogo.nome}">
-                    <div class="card-body">
-                        <h5 class="card-title">${jogo.nome}</h5>
-                        <p class="card-text">R$ ${jogo.preco.toFixed(2)}</p>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-}
-
+// Mostrar o modal com as informações do jogo
 function mostrarModal(idJogo) {
+    // Encontrar o jogo no array de jogos
     const jogo = jogos.find(j => j.idJogo === idJogo);
-    const modalContent = document.getElementById('modal-content');
-    modalContent.innerHTML = `
-        <img src="data:image/jpeg;base64,${jogo.imagem}" class="img-fluid mb-3" alt="${jogo.nome}">
-        <h5>${jogo.nome}</h5>
-        <p>${jogo.descricao}</p>
-        <p>R$ ${jogo.preco.toFixed(2)}</p>
-    `;
-    document.getElementById('adicionarCarrinho').onclick = () => adicionarCarrinho(jogo.idJogo);
-    const modal = new bootstrap.Modal(document.getElementById('jogoModal'));
-    modal.show();
+
+    if (jogo) {
+        // Preencher o conteúdo do modal com os dados do jogo
+        const modalContent = document.getElementById('modal-content');
+        modalContent.innerHTML = `
+            <img src="data:image/jpeg;base64,${jogo.imagem}" class="img-fluid mb-3" alt="${jogo.nome}">
+            <h5>${jogo.nome}</h5>
+            <p>${jogo.descricao}</p>
+            <p>R$ ${jogo.preco.toFixed(2)}</p>
+        `;
+
+        // Atualizar a ação do botão de "Adicionar ao Carrinho"
+        document.getElementById('adicionarCarrinho').onclick = () => {
+            adicionarCarrinho(jogo.idJogo);
+        };
+
+        // Inicializar o modal e exibi-lo
+        const modal = new bootstrap.Modal(document.getElementById('jogoModal'));
+        modal.show();
+    }
 }
 
+// Função para adicionar o jogo ao carrinho
 function adicionarCarrinho(idJogo) {
     fetch('/carrinho/adicionar', {
         method: 'POST',
@@ -80,12 +45,17 @@ function adicionarCarrinho(idJogo) {
         if (response.ok) {
             alert('Jogo adicionado ao carrinho!');
             atualizarQuantidadeCarrinho();
+
+            const modalElement = document.getElementById('jogoModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal.hide();  // Fecha o modal
         } else {
             alert('Erro ao adicionar o jogo. Tente novamente.');
         }
     });
 }
 
+// Função para atualizar a quantidade de itens no carrinho
 function atualizarQuantidadeCarrinho() {
     fetch('/carrinho/quantidade')
         .then(response => response.json())
