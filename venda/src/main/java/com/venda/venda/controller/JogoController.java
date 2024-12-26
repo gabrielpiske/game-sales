@@ -1,16 +1,12 @@
 package com.venda.venda.controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
 import com.venda.venda.model.Jogo;
-import com.venda.venda.service.CarrinhoService;
 import com.venda.venda.service.JogoService;
-import com.venda.venda.service.UsuarioService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;

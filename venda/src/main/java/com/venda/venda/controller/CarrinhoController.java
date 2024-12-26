@@ -2,7 +2,6 @@ package com.venda.venda.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.venda.venda.model.Jogo;
-import com.venda.venda.model.Usuario;
 import com.venda.venda.service.CarrinhoService;
 import com.venda.venda.service.JogoService;
 import com.venda.venda.service.UsuarioService;
