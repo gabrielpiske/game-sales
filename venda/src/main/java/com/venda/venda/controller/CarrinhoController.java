@@ -6,11 +6,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.venda.venda.model.Carrinho;
 import com.venda.venda.model.Jogo;
 import com.venda.venda.service.CarrinhoService;
 import com.venda.venda.service.JogoService;
@@ -64,8 +66,24 @@ public class CarrinhoController {
     }
 
     @GetMapping("/carrinho")
-    public String exibirCarrinhoPage() {
+    public String exibirCarrinhoPage(Authentication authentication, Model model) {
+        String email = authentication.getName();
+        Integer usuarioId = usuarioService.buscarIdPorEmail(email);
+
+        List<Carrinho> itensCarrinho = carrinhoService.listarItensPorUsuario(usuarioId);
+        Double valorTotal = carrinhoService.calcularValorTotalPorUsuario(usuarioId);
+
+        model.addAttribute("carrinho", itensCarrinho);
+        model.addAttribute("valorTotal", valorTotal);
+        model.addAttribute("usuarioNome", usuarioService.buscarPorEmail(email).get().getNome());
+
         return "carrinho";
     }
+
+    @PostMapping("/carrinho/remover")
+    public String removerItemDoCarrinho(@RequestParam Integer id, Authentication authentication) {
+        carrinhoService.deletarItemDoCarrinho(id);
+        return "redirect:/carrinho";
+}
     
 }

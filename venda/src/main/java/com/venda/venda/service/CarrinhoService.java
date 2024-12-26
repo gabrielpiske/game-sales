@@ -1,5 +1,7 @@
 package com.venda.venda.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +53,9 @@ public class CarrinhoService {
 
     public int quantidadeItensPorUsuario(Integer usuarioId) {
         return carrinhoRepository.findByUsuarioId(usuarioId).size();
+    }
+
+    public List<Carrinho> listarItensPorUsuario(Integer usuarioId) {
+        return carrinhoRepository.findByUsuarioId(usuarioId);
     }
 }
