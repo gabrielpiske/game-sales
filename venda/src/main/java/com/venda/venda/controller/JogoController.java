@@ -26,12 +26,6 @@ public class JogoController {
     @Autowired
     private JogoService jogoService;
 
-    @Autowired
-    private UsuarioService usuarioService;
-
-    @Autowired
-    private CarrinhoService carrinhoService;
-
     @PostMapping("/anunciar")
     public String salvarOuAtualizarJogo(@ModelAttribute Jogo jogo, @RequestParam("file") MultipartFile file)
             throws IOException {
