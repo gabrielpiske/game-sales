@@ -85,8 +85,5 @@ public class CarrinhoController {
         return "redirect:/carrinho";
     }
 
-    @GetMapping("/pagar-com-pix")
-    public String exibirPixPage(Model model) {
-        return "pixPage";
-    }
+
 }
