@@ -54,7 +54,6 @@ public class CarrinhoController {
         }
     }
 
-
     @GetMapping("/carrinho/quantidade")
     @ResponseBody
     public Map<String, Integer> quantidadeCarrinho(Authentication authentication) {
@@ -84,6 +83,10 @@ public class CarrinhoController {
     public String removerItemDoCarrinho(@RequestParam Integer id, Authentication authentication) {
         carrinhoService.deletarItemDoCarrinho(id);
         return "redirect:/carrinho";
-}
-    
+    }
+
+    @GetMapping("/pagar-com-pix")
+    public String exibirPixPage(Model model) {
+        return "pixPage";
+    }
 }
