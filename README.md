@@ -66,7 +66,7 @@ src/
 1. Clone este repositório:
 
    ```bash
-   git clone https://github.com/seu-usuario/game-sales.git
+   git clone https://github.com/gabrielpiske/game-sales.git
    cd game-sales
    ```
 
