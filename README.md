@@ -90,4 +90,4 @@ src/
    mvn spring-boot:run
    ```
 
-5. Acesse a aplicação em [http://localhost:8080](http://localhost:8080/login).
+5. Acesse a aplicação em [http://localhost:8080/login](http://localhost:8080/login).
