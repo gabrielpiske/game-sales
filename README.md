@@ -38,6 +38,7 @@ src/
 │   ├── java/
 │   │   └── com/
 │   │       └── gamesales/
+│   │           ├── config/  # Configurações de Segurança
 │   │           ├── controller/  # Controladores MVC
 │   │           ├── model/       # Classes modelo (Jogo, Usuário, Carrinho)
 │   │           ├── repository/  # Repositórios para acesso ao banco
