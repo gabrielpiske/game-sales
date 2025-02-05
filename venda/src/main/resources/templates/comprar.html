@@ -62,7 +62,7 @@
                     <img th:src="'data:image/jpeg;base64,' + ${jogo.imagem}" class="card-img-top" th:alt="${jogo.nome}">
                     <div class="card-body">
                         <h5 class="card-title" th:text="${jogo.nome}"></h5>
-                        <p th:text="'R$ ' + ${jogo.preco}"></p>
+                        <p th:text="${jogo.preco}"></p>
                     </div>
                 </div>
                               
